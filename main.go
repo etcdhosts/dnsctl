@@ -69,7 +69,7 @@ func exampleCmd() *cli.Command {
 		Name:  "example",
 		Usage: "print example config",
 		Action: func(c *cli.Context) error {
-			//fmt.Println(ExampleConfig())
+			fmt.Println(ExampleConfig())
 			return nil
 		},
 	}
