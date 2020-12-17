@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"net"
 	"os"
 	"path/filepath"
 
@@ -47,15 +48,18 @@ func main() {
 				EnvVars: []string{"DNSCTL_DEBUG"},
 			},
 		},
-		Action: func(c *cli.Context) error {
+		Before: func(c *cli.Context) error {
 			if c.Bool("debug") {
 				logger.SetDevelopment()
 			}
-
 			return nil
+		},
+		Action: func(c *cli.Context) error {
+			return cli.ShowAppHelp(c)
 		},
 		Commands: []*cli.Command{
 			exampleCmd(),
+			addCmd(),
 		},
 	}
 	err = app.Run(os.Args)
@@ -70,6 +74,36 @@ func exampleCmd() *cli.Command {
 		Usage: "print example config",
 		Action: func(c *cli.Context) error {
 			fmt.Println(ExampleConfig())
+			return nil
+		},
+	}
+}
+
+func addCmd() *cli.Command {
+	return &cli.Command{
+		Name:      "add",
+		Usage:     "add host to coredns",
+		UsageText: "add HOST IP",
+		Action: func(c *cli.Context) error {
+			if c.NArg() != 2 || net.ParseIP(c.Args().Get(1)) == nil {
+				cli.ShowCommandHelpAndExit(c, c.Command.Name, 1)
+			}
+
+			hc, err := createClient(c)
+			if err != nil {
+				return err
+			}
+
+			hf, err := hc.ReadHosts()
+			if err != nil {
+				return err
+			}
+
+			err = hf.AddHost(c.Args().Get(0), c.Args().Get(1))
+			if err != nil {
+				return err
+			}
+			logger.Info("host add success.")
 			return nil
 		},
 	}
