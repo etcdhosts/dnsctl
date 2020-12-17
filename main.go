@@ -67,7 +67,7 @@ func main() {
 	}
 	err = app.Run(os.Args)
 	if err != nil {
-		logger.Fatal(err)
+		logger.Error(err)
 	}
 }
 
@@ -106,6 +106,12 @@ func addCmd() *cli.Command {
 			if err != nil {
 				return err
 			}
+
+			err = hc.PutHost(hf)
+			if err != nil {
+				return err
+			}
+
 			logger.Info("host add success.")
 			return nil
 		},
@@ -144,12 +150,16 @@ func delCmd() *cli.Command {
 			}
 			if c.Bool("purge") {
 				hf.PurgeHost(c.Args().Get(0))
-				return nil
 			} else {
 				err = hf.DelHost(c.Args().Get(0), c.Args().Get(1))
 				if err != nil {
 					return err
 				}
+			}
+
+			err = hc.PutHost(hf)
+			if err != nil {
+				return err
 			}
 
 			logger.Info("host delete success.")
@@ -181,7 +191,7 @@ func dumpCmd() *cli.Command {
 				return err
 			}
 			if c.String("out") == "" {
-				fmt.Printf("\n%s", hf.String())
+				fmt.Println(hf.String())
 				return nil
 			} else {
 				return ioutil.WriteFile(c.String("out"), []byte(hf.String()), 0644)
