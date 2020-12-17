@@ -63,6 +63,7 @@ func main() {
 			dumpCmd(),
 			restoreCmd(),
 			historyCmd(),
+			editCmd(),
 		},
 	}
 	err = app.Run(os.Args)
