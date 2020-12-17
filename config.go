@@ -10,8 +10,8 @@ import (
 )
 
 type Config struct {
-	configPath string
-	client.Config
+	configPath    string
+	client.Config `yaml:",inline"`
 }
 
 func (cfg *Config) UnmarshalYAML(unmarshal func(interface{}) error) error {
