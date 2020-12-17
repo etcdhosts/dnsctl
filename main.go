@@ -60,6 +60,7 @@ func main() {
 		Commands: []*cli.Command{
 			exampleCmd(),
 			addCmd(),
+			delCmd(),
 		},
 	}
 	err = app.Run(os.Args)
@@ -82,7 +83,7 @@ func exampleCmd() *cli.Command {
 func addCmd() *cli.Command {
 	return &cli.Command{
 		Name:      "add",
-		Usage:     "add host to coredns",
+		Usage:     "add a DNS record",
 		UsageText: "add HOST IP",
 		Action: func(c *cli.Context) error {
 			if c.NArg() != 2 || net.ParseIP(c.Args().Get(1)) == nil {
@@ -104,6 +105,52 @@ func addCmd() *cli.Command {
 				return err
 			}
 			logger.Info("host add success.")
+			return nil
+		},
+	}
+}
+
+func delCmd() *cli.Command {
+	return &cli.Command{
+		Name:      "del",
+		Usage:     "delete a DNS record",
+		UsageText: "del HOST [IP]",
+		Flags: []cli.Flag{
+			&cli.BoolFlag{
+				Name:  "purge",
+				Value: false,
+				Usage: "delete all records of a given host",
+			},
+		},
+		Action: func(c *cli.Context) error {
+			if c.Bool("purge") && c.NArg() != 1 {
+				cli.ShowCommandHelpAndExit(c, c.Command.Name, 1)
+			}
+
+			if !c.Bool("purge") && (c.NArg() != 2 || net.ParseIP(c.Args().Get(1)) == nil) {
+				cli.ShowCommandHelpAndExit(c, c.Command.Name, 1)
+			}
+
+			hc, err := createClient(c)
+			if err != nil {
+				return err
+			}
+
+			hf, err := hc.ReadHosts()
+			if err != nil {
+				return err
+			}
+			if c.Bool("purge") {
+				hf.PurgeHost(c.Args().Get(0))
+				return nil
+			} else {
+				err = hf.DelHost(c.Args().Get(0), c.Args().Get(1))
+				if err != nil {
+					return err
+				}
+			}
+
+			logger.Info("host delete success.")
 			return nil
 		},
 	}
