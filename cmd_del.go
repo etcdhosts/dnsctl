@@ -10,7 +10,7 @@ import (
 func delCmd() *cli.Command {
 	return &cli.Command{
 		Name:      "del",
-		Usage:     "delete a DNS record",
+		Usage:     "Delete a DNS record",
 		UsageText: "del HOST [IP]",
 		Flags: []cli.Flag{
 			&cli.BoolFlag{

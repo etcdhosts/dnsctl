@@ -9,7 +9,7 @@ import (
 func exampleCmd() *cli.Command {
 	return &cli.Command{
 		Name:  "example",
-		Usage: "print example config",
+		Usage: "Print example config",
 		Action: func(c *cli.Context) error {
 			fmt.Println(ExampleConfig())
 			return nil

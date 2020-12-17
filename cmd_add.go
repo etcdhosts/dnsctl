@@ -10,7 +10,7 @@ import (
 func addCmd() *cli.Command {
 	return &cli.Command{
 		Name:      "add",
-		Usage:     "add a DNS record",
+		Usage:     "Add a DNS record",
 		UsageText: "add HOST IP",
 		Action: func(c *cli.Context) error {
 			if c.NArg() != 2 || net.ParseIP(c.Args().Get(1)) == nil {

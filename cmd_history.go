@@ -9,7 +9,7 @@ import (
 func historyCmd() *cli.Command {
 	return &cli.Command{
 		Name:  "history",
-		Usage: "print hosts change history",
+		Usage: "Print hosts change history",
 		Action: func(c *cli.Context) error {
 			return fmt.Errorf("the history command has not yet been implemented")
 		},

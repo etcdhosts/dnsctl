@@ -13,7 +13,7 @@ import (
 func restoreCmd() *cli.Command {
 	return &cli.Command{
 		Name:      "restore",
-		Usage:     "restore dns records from hosts file",
+		Usage:     "Restore dns records from hosts file",
 		UsageText: "restore FILE_PATH",
 		Flags: []cli.Flag{
 			&cli.BoolFlag{

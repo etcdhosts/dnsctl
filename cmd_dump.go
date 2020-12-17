@@ -10,7 +10,7 @@ import (
 func dumpCmd() *cli.Command {
 	return &cli.Command{
 		Name:  "dump",
-		Usage: "dump all DNS records",
+		Usage: "Dump all DNS records",
 		Flags: []cli.Flag{
 			&cli.StringFlag{
 				Name:    "out",
