@@ -6,6 +6,7 @@ import (
 	"net"
 	"os"
 	"path/filepath"
+	"time"
 
 	"github.com/mitchellh/go-homedir"
 	"github.com/mritd/logger"
@@ -63,6 +64,7 @@ func main() {
 			addCmd(),
 			delCmd(),
 			dumpCmd(),
+			restoreCmd(),
 		},
 	}
 	err = app.Run(os.Args)
@@ -97,7 +99,7 @@ func addCmd() *cli.Command {
 				return err
 			}
 
-			hf, err := hc.ReadHosts()
+			hf, err := hc.ReadHostsFile()
 			if err != nil {
 				return err
 			}
@@ -107,12 +109,12 @@ func addCmd() *cli.Command {
 				return err
 			}
 
-			err = hc.PutHost(hf)
+			err = hc.PutHostsFile(hf)
 			if err != nil {
 				return err
 			}
 
-			logger.Info("host add success.")
+			logger.Info("DNS record added successfully.")
 			return nil
 		},
 	}
@@ -144,7 +146,7 @@ func delCmd() *cli.Command {
 				return err
 			}
 
-			hf, err := hc.ReadHosts()
+			hf, err := hc.ReadHostsFile()
 			if err != nil {
 				return err
 			}
@@ -157,12 +159,12 @@ func delCmd() *cli.Command {
 				}
 			}
 
-			err = hc.PutHost(hf)
+			err = hc.PutHostsFile(hf)
 			if err != nil {
 				return err
 			}
 
-			logger.Info("host delete success.")
+			logger.Info("DNS record deleted successfully.")
 			return nil
 		},
 	}
@@ -186,7 +188,7 @@ func dumpCmd() *cli.Command {
 				return err
 			}
 
-			hf, err := hc.ReadHosts()
+			hf, err := hc.ReadHostsFile()
 			if err != nil {
 				return err
 			}
@@ -196,6 +198,56 @@ func dumpCmd() *cli.Command {
 			} else {
 				return ioutil.WriteFile(c.String("out"), []byte(hf.String()), 0644)
 			}
+		},
+	}
+}
+
+func restoreCmd() *cli.Command {
+	return &cli.Command{
+		Name:      "restore",
+		Usage:     "restore dns records from hosts file",
+		UsageText: "restore FILE_PATH",
+		Flags: []cli.Flag{
+			&cli.BoolFlag{
+				Name:    "backup",
+				Aliases: []string{"b"},
+				Value:   true,
+				Usage:   "back up the original hosts file when restoring",
+			},
+		},
+		Action: func(c *cli.Context) error {
+			if c.NArg() != 1 {
+				cli.ShowCommandHelpAndExit(c, c.Command.Name, 1)
+			}
+			f, err := os.Open(c.Args().Get(0))
+			if err != nil {
+				return err
+			}
+			defer func() { _ = f.Close() }()
+
+			hc, err := createClient(c)
+			if err != nil {
+				return err
+			}
+
+			if c.Bool("backup") {
+				hf, err := hc.ReadHostsFile()
+				if err != nil {
+					return err
+				}
+				err = ioutil.WriteFile(fmt.Sprintf("dnsctl.%d.bak", time.Now().Unix()), []byte(hf.String()), 0644)
+				if err != nil {
+					return err
+				}
+			}
+
+			err = hc.ForcePutHostsFile(f)
+			if err != nil {
+				return err
+			}
+
+			logger.Info("DNS record restored successfully.")
+			return nil
 		},
 	}
 }
