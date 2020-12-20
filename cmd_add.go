@@ -66,35 +66,35 @@ func (m addMode) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 	switch stage {
 	case 0:
-		m.stageMsg = "Create etcdhosts client..."
+		m.stageMsg = makeInfo("Create etcdhosts client...")
 		m.hc, err = createClient(m.ctx)
 		if err != nil {
-			m.stageMsg = "ERROR: " + err.Error()
+			m.stageMsg = makeError("ERROR: " + err.Error())
 			return m, tea.Quit
 		}
 	case 1:
-		m.stageMsg = "Read hostsfile from etcd..."
+		m.stageMsg = makeInfo("Read hostsfile from etcd...")
 		m.hf, err = m.hc.ReadHostsFile()
 		if err != nil {
-			m.stageMsg = "ERROR: " + err.Error()
+			m.stageMsg = makeError("ERROR: " + err.Error())
 			return m, tea.Quit
 		}
 	case 2:
-		m.stageMsg = "Add host to hostsfile..."
+		m.stageMsg = makeInfo("Add host to hostsfile...")
 		err = m.hf.AddHost(m.ctx.Args().Get(0), m.ctx.Args().Get(1))
 		if err != nil {
-			m.stageMsg = "ERROR: " + err.Error()
+			m.stageMsg = makeError("ERROR: " + err.Error())
 			return m, tea.Quit
 		}
 	case 3:
-		m.stageMsg = "Put hostsfile into etcd..."
+		m.stageMsg = makeInfo("Put hostsfile into etcd...")
 		err = m.hc.PutHostsFile(m.hf)
 		if err != nil {
-			m.stageMsg = "ERROR: " + err.Error()
+			m.stageMsg = makeError("ERROR: " + err.Error())
 			return m, tea.Quit
 		}
 	case 4:
-		m.stageMsg = "DNS records add success..."
+		m.stageMsg = makeInfo("DNS records add success...")
 	}
 
 	stage++

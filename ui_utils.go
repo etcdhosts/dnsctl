@@ -11,16 +11,6 @@ import (
 )
 
 const (
-	cmdCreateClient = iota
-	cmdReadHostsFile
-	cmdPutHostsFile
-	cmdAddHost
-	cmdDelHost
-	cmdPurgeHost
-	cmdSearchHost
-)
-
-const (
 	progressFullChar  = "█"
 	progressEmptyChar = "░"
 )
@@ -92,4 +82,12 @@ func colorFloatToHex(f float64) (s string) {
 		s = "0" + s
 	}
 	return
+}
+
+func makeInfo(msg string) string {
+	return termenv.String(msg).Foreground(term.Color("2")).Bold().String()
+}
+
+func makeError(msg string) string {
+	return termenv.String(msg).Foreground(term.Color("9")).Bold().String()
 }
