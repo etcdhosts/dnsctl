@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
 	"io/ioutil"
 	"os"
@@ -63,18 +64,17 @@ func editCmd() *cli.Command {
 				return err
 			}
 
-			nf, err := os.Open(f.Name())
+			raw, err := ioutil.ReadFile(f.Name())
 			if err != nil {
 				return err
 			}
-			defer func() { _ = nf.Close() }()
-			hm := client.Parse2Map(nf)
+			hm := client.Parse2Map(bytes.NewReader(raw))
 			if hm.String() == hf.String() {
 				logger.Info("DNS records not change.")
 				return nil
 			} else {
 				logger.Info("DNS records updated.")
-				return hc.ForcePutHostsFile(f)
+				return hc.ForcePutHostsFile(bytes.NewReader(raw))
 			}
 		},
 	}
