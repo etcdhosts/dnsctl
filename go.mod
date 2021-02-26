@@ -4,7 +4,7 @@ go 1.16
 
 require (
 	github.com/cpuguy83/go-md2man/v2 v2.0.0 // indirect
-	github.com/etcdhosts/client-go v0.0.0-20210225093930-ce5b6640cd93
+	github.com/etcdhosts/client-go v0.0.0-20210226085440-f597fc08d911
 	github.com/mitchellh/go-homedir v1.1.0
 	github.com/mritd/logger v0.0.5
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect

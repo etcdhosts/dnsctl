@@ -1,25 +1,39 @@
 package main
 
 import (
-	"fmt"
-
-	"github.com/etcdhosts/client-go"
+	"os"
+	"text/template"
 
 	"github.com/urfave/cli/v2"
 )
+
+const historyTpl = `+-------------+------------------+
+|   VERSION   |   MOD REVISION   |
++-------------+------------------+
+{{range $index,$hf := .}}|   {{$hf.Version | printf "%-7d"}}   |   {{ $hf.ModRevision | printf "%-12d"}}   |{{end}}
++--------------------------------+
+`
 
 func historyCmd() *cli.Command {
 	return &cli.Command{
 		Name:  "history",
 		Usage: "Print hosts change history",
 		Action: func(c *cli.Context) error {
-			return fmt.Errorf("the history command has not yet been implemented")
+			hc, err := createClient(c)
+			if err != nil {
+				return err
+			}
+
+			hfs, err := hc.GetHostsFileHistory()
+			if err != nil {
+				return err
+			}
+
+			tpl, err := template.New("history").Parse(historyTpl)
+			if err != nil {
+				return err
+			}
+			return tpl.Execute(os.Stdout, hfs)
 		},
 	}
-}
-
-type historyMode struct {
-	ctx *cli.Context
-	hc  *client.Client
-	hf  *client.HostsFile
 }
