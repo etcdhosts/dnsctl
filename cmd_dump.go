@@ -29,6 +29,7 @@ func dumpCmd() *cli.Command {
 			if err != nil {
 				return err
 			}
+
 			if c.String("out") == "" {
 				fmt.Println(hf.String())
 				return nil

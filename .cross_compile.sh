@@ -3,10 +3,8 @@
 set -e
 
 DIST_PREFIX="dnsctl"
-GO111MODULE="on"
-GOPROXY="https://goproxy.cn"
 TARGET_DIR="dist"
-PLATFORMS="darwin/amd64 linux/386 linux/amd64 linux/arm linux/arm64 windows/386 windows/amd64"
+PLATFORMS="darwin/amd64 darwin/arm64 linux/386 linux/amd64 linux/arm linux/arm64 windows/386 windows/amd64"
 
 rm -rf ${TARGET_DIR}
 mkdir ${TARGET_DIR}
