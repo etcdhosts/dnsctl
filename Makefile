@@ -6,7 +6,6 @@ all: clean
 	bash .cross_compile.sh
 
 release: all
-	-gh release delete ${BUILD_VERSION}
 	gh release create ${BUILD_VERSION} -t "Bump ${BUILD_VERSION}" ./dist/*
 
 install:
