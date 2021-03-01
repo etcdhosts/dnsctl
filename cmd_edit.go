@@ -20,7 +20,6 @@ func editCmd() *cli.Command {
 		Name:  "edit",
 		Usage: "Edit the hosts file with an editor",
 		Action: func(c *cli.Context) error {
-
 			f, err := ioutil.TempFile("", "dnsctl")
 			if err != nil {
 				return err
