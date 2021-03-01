@@ -30,8 +30,8 @@ github.com/dustin/go-humanize v0.0.0-20171111073723-bb3d318650d4 h1:qk/FSDDxo05w
 github.com/dustin/go-humanize v0.0.0-20171111073723-bb3d318650d4/go.mod h1:HtrtbFcZ19U5GC7JDqmcUSB87Iq5E25KnS6fMYU6eOk=
 github.com/envoyproxy/go-control-plane v0.9.1-0.20191026205805-5f8ba28d4473/go.mod h1:YTl/9mNaCwkRvm6d1a2C3ymFceY/DCBVvsKhRF0iEA4=
 github.com/envoyproxy/protoc-gen-validate v0.1.0/go.mod h1:iSmxcyjqTsJpI2R4NaDN7+kN2VEUnK/pcBlmesArF7c=
-github.com/etcdhosts/client-go v0.0.0-20210226085440-f597fc08d911 h1:aVzIvLUh6yMreTxEwvefZG4cecsoJeft4eTs7I3Ngfc=
-github.com/etcdhosts/client-go v0.0.0-20210226085440-f597fc08d911/go.mod h1:JHxhuTEeczf0A1FTSA6Co/sZYK2BPCuPPzqsB69LkzU=
+github.com/etcdhosts/client-go v0.0.0-20210301021117-d60776cbb7c9 h1:bsz7A75w4P0brTdJwI68kk84nOo1Jhz1dsC2ZUe+t4c=
+github.com/etcdhosts/client-go v0.0.0-20210301021117-d60776cbb7c9/go.mod h1:JHxhuTEeczf0A1FTSA6Co/sZYK2BPCuPPzqsB69LkzU=
 github.com/fatih/color v1.7.0/go.mod h1:Zm6kSWBoL9eyXnKyktHP6abPY2pDugNf5KwzbycvMj4=
 github.com/ghodss/yaml v1.0.0/go.mod h1:4dBDuWmgqj2HViK6kFavaiC9ZROes6MMH2rRYeMEF04=
 github.com/go-kit/kit v0.8.0/go.mod h1:xBxKIO96dXMWWy0MnWVtmwkA9/13aqxPnvrjFYMA2as=
