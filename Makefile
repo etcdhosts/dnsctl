@@ -6,7 +6,8 @@ all: clean
 	bash .cross_compile.sh
 
 release: all
-	ghr -u etcdhosts -t ${GITHUB_TOKEN} -replace -recreate -name "Bump ${BUILD_VERSION}" --debug ${BUILD_VERSION} dist
+	-gh release delete ${BUILD_VERSION}
+	gh release create ${BUILD_VERSION} -t "Bump ${BUILD_VERSION}" ./dist/*
 
 install:
 	go install -trimpath -ldflags	"-X 'main.version=${BUILD_VERSION}' \
@@ -17,8 +18,3 @@ clean:
 	rm -rf dist
 
 .PHONY: all release clean install
-
-.EXPORT_ALL_VARIABLES:
-
-GO111MODULE = on
-GOPROXY = https://goproxy.cn
