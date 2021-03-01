@@ -6,7 +6,7 @@ all: clean
 	bash .cross_compile.sh
 
 release: all
-	ghr -u mritd -t ${GITHUB_TOKEN} -replace -recreate -name "Bump ${BUILD_VERSION}" --debug ${BUILD_VERSION} dist
+	ghr -u etcdhosts -t ${GITHUB_TOKEN} -replace -recreate -name "Bump ${BUILD_VERSION}" --debug ${BUILD_VERSION} dist
 
 install:
 	go install -trimpath -ldflags	"-X 'main.version=${BUILD_VERSION}' \
