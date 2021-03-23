@@ -10,20 +10,9 @@ func delCmd() *cli.Command {
 	return &cli.Command{
 		Name:      "del",
 		Usage:     "Delete a DNS record",
-		UsageText: "del HOST [IP]",
-		Flags: []cli.Flag{
-			&cli.BoolFlag{
-				Name:  "purge",
-				Value: false,
-				Usage: "delete all records of a given host",
-			},
-		},
+		UsageText: "del IP HOST",
 		Action: func(c *cli.Context) error {
-			if c.Bool("purge") && c.NArg() != 1 {
-				cli.ShowCommandHelpAndExit(c, c.Command.Name, 1)
-			}
-
-			if !c.Bool("purge") && (c.NArg() != 2 || net.ParseIP(c.Args().Get(1)) == nil) {
+			if c.NArg() != 2 || net.ParseIP(c.Args().Get(0)) == nil {
 				cli.ShowCommandHelpAndExit(c, c.Command.Name, 1)
 			}
 
@@ -37,14 +26,9 @@ func delCmd() *cli.Command {
 				return err
 			}
 
-			if c.Bool("purge") {
-				hf.PurgeHost(c.Args().Get(0))
-				return nil
-			} else {
-				err = hf.DelHost(c.Args().Get(0), c.Args().Get(1))
-				if err != nil {
-					return err
-				}
+			err = hf.DelHost(c.Args().Get(1), c.Args().Get(0))
+			if err != nil {
+				return err
 			}
 
 			return hc.PutHostsFile(hf)

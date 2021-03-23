@@ -1,12 +1,8 @@
 package main
 
 import (
-	"fmt"
-	"io/ioutil"
-	"os"
-	"time"
-
 	"github.com/urfave/cli/v2"
+	"os"
 )
 
 func restoreCmd() *cli.Command {
@@ -14,14 +10,6 @@ func restoreCmd() *cli.Command {
 		Name:      "restore",
 		Usage:     "Restore dns records from hosts file",
 		UsageText: "restore FILE_PATH",
-		Flags: []cli.Flag{
-			&cli.BoolFlag{
-				Name:    "backup",
-				Aliases: []string{"b"},
-				Value:   true,
-				Usage:   "back up the original hosts file when restoring",
-			},
-		},
 		Action: func(c *cli.Context) error {
 			if c.NArg() != 1 {
 				cli.ShowCommandHelpAndExit(c, c.Command.Name, 1)
@@ -35,18 +23,6 @@ func restoreCmd() *cli.Command {
 			hc, err := createClient(c)
 			if err != nil {
 				return err
-			}
-
-			if c.Bool("backup") {
-				hf, err := hc.ReadHostsFile()
-				if err != nil {
-					return err
-				}
-
-				err = ioutil.WriteFile(fmt.Sprintf("dnsctl.%d.bak", time.Now().Unix()), []byte(hf.String()), 0644)
-				if err != nil {
-					return err
-				}
 			}
 
 			return hc.ForcePutHostsFile(f)

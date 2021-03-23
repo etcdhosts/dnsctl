@@ -10,8 +10,6 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
-const cmdProgressBarWidth = 35
-
 var (
 	version   string
 	buildDate string
@@ -33,11 +31,11 @@ func main() {
 				Email: "mritd@linux.com",
 			},
 		},
-		Copyright: "Copyright (ctx) 2020 mritd, All rights reserved.",
+		Copyright: "Copyright (c) 2020 mritd, All rights reserved.",
 		Flags: []cli.Flag{
 			&cli.StringFlag{
 				Name:    "config",
-				Aliases: []string{"ctx"},
+				Aliases: []string{"c"},
 				Value:   filepath.Join(home, ".dnsctl.yaml"),
 				Usage:   "dnsctl config",
 				EnvVars: []string{"DNSCTL_CONFIG"},
@@ -62,6 +60,7 @@ func main() {
 			exampleCmd(),
 			addCmd(),
 			delCmd(),
+			purgeCmd(),
 			dumpCmd(),
 			restoreCmd(),
 			historyCmd(),

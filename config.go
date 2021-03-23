@@ -80,7 +80,7 @@ func (cfg *Config) LoadFrom(filePath string) error {
 func ExampleConfig() string {
 	out, _ := yaml.Marshal(Config{
 		Config: client.Config{
-			CA:   "/etc/etcd/ssl/etcd-root-ca.pem",
+			CA:   "/etc/etcd/ssl/etcd-ca.pem",
 			Cert: "/etc/etcd/ssl/etcd.pem",
 			Key:  "/etc/etcd/ssl/etcd-key.pem",
 			Endpoints: []string{
