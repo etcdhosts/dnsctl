@@ -31,7 +31,7 @@ func main() {
 				Email: "mritd@linux.com",
 			},
 		},
-		Copyright: "Copyright (c) 2020 mritd, All rights reserved.",
+		Copyright: "Copyright (c) 2022 mritd, All rights reserved.",
 		Flags: []cli.Flag{
 			&cli.StringFlag{
 				Name:    "config",
@@ -67,8 +67,7 @@ func main() {
 			editCmd(),
 		},
 	}
-	err = app.Run(os.Args)
-	if err != nil {
-		logger.Error(err)
+	if err = app.Run(os.Args); err != nil {
+		logger.Fatal(err)
 	}
 }

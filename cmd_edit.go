@@ -8,10 +8,8 @@ import (
 	"os/exec"
 	"runtime"
 
-	"github.com/mritd/logger"
-
 	"github.com/etcdhosts/client-go"
-
+	"github.com/mritd/logger"
 	"github.com/urfave/cli/v2"
 )
 
