@@ -61,6 +61,15 @@ tasks:
     cmds:
       - go install -trimpath -ldflags "{{.LDFLAGS}}"
 
+  dev:
+    desc: Install with local client-go (auto-reset after)
+    cmds:
+      - go mod edit -replace=github.com/etcdhosts/client-go/v2=../client-go
+      - defer: go mod edit -dropreplace=github.com/etcdhosts/client-go/v2
+      - defer: go mod tidy
+      - go mod tidy
+      - go install -trimpath -ldflags "{{.LDFLAGS}}"
+
   # Internal cross-compilation task
   build-cross:
     label: build-{{.TASK}}

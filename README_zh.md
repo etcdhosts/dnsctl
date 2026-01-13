@@ -4,6 +4,22 @@
 
 ## 安装
 
+### 下载二进制文件
+
+从 [GitHub Releases](https://github.com/etcdhosts/dnsctl/releases) 下载预编译的二进制文件:
+
+```sh
+# Linux amd64
+curl -LO https://github.com/etcdhosts/dnsctl/releases/latest/download/dnsctl-linux-amd64
+chmod +x dnsctl-linux-amd64
+sudo mv dnsctl-linux-amd64 /usr/local/bin/dnsctl
+
+# macOS arm64 (Apple Silicon)
+curl -LO https://github.com/etcdhosts/dnsctl/releases/latest/download/dnsctl-darwin-arm64
+chmod +x dnsctl-darwin-arm64
+sudo mv dnsctl-darwin-arm64 /usr/local/bin/dnsctl
+```
+
 ### 从源码编译
 
 ```sh
@@ -73,6 +89,49 @@ dnsctl list -o yaml
 
 # 读取指定版本
 dnsctl list -r 12345
+```
+
+输出示例:
+
+**hosts 格式 (默认)**
+```
+192.168.1.1             web.example.com.
+192.168.1.2             api.example.com. # +etcdhosts weight=3
+192.168.1.3             api.example.com. # +etcdhosts weight=1 hc=http:8080/health
+```
+
+**JSON 格式 (`-o json`)**
+```json
+{
+  "version": 5,
+  "mod_revision": 12350,
+  "modified": "2024-01-12T10:30:00Z",
+  "records": [
+    {"hostname": "web.example.com.", "ip": "192.168.1.1"},
+    {"hostname": "api.example.com.", "ip": "192.168.1.2", "weight": 3},
+    {"hostname": "api.example.com.", "ip": "192.168.1.3", "weight": 1, "health": {"type": "http", "port": 8080, "path": "/health"}}
+  ]
+}
+```
+
+**YAML 格式 (`-o yaml`)**
+```yaml
+version: 5
+mod_revision: 12350
+modified: "2024-01-12T10:30:00Z"
+records:
+  - hostname: web.example.com.
+    ip: 192.168.1.1
+  - hostname: api.example.com.
+    ip: 192.168.1.2
+    weight: 3
+  - hostname: api.example.com.
+    ip: 192.168.1.3
+    weight: 1
+    health:
+      type: http
+      port: 8080
+      path: /health
 ```
 
 ### 编辑记录
