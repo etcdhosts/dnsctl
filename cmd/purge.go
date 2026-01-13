@@ -31,7 +31,7 @@ func runPurge(cmd *cobra.Command, args []string) error {
 	if err != nil {
 		return err
 	}
-	defer cli.Close()
+	defer func() { _ = cli.Close() }()
 
 	hosts, err := cli.Read()
 	if err != nil {

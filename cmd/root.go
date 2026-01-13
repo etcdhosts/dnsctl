@@ -2,7 +2,6 @@
 package cmd
 
 import (
-	"fmt"
 	"os"
 	"path/filepath"
 
@@ -12,17 +11,6 @@ import (
 	"github.com/etcdhosts/dnsctl/v2/internal/config"
 )
 
-// VersionInfo holds version information for display.
-type VersionInfo struct {
-	Version   string
-	Commit    string
-	BuildDate string
-}
-
-var versionInfo = VersionInfo{
-	Version: "dev",
-}
-
 var cfgFile string
 
 // rootCmd represents the base command when called without any subcommands.
@@ -31,7 +19,7 @@ var rootCmd = &cobra.Command{
 	Short: "Command line tool for etcdhosts DNS management",
 	Long: `dnsctl is a CLI tool for managing DNS records stored in etcd.
 
-It provides commands to add, delete, list, and purge DNS records
+It provides commands to edit, list, compare, and manage DNS records
 that are used by the etcdhosts CoreDNS plugin.`,
 }
 
@@ -49,10 +37,9 @@ func init() {
 	rootCmd.PersistentFlags().StringVarP(&cfgFile, "config", "c", defaultConfig, "config file path")
 }
 
-// SetVersionInfo sets the version information.
-func SetVersionInfo(info VersionInfo) {
-	versionInfo = info
-	rootCmd.Version = fmt.Sprintf("%s %s %s", info.Version, info.BuildDate, info.Commit)
+// SetVersion sets the version string for --version flag.
+func SetVersion(version string) {
+	rootCmd.Version = version
 }
 
 // newClient creates a new etcdhosts client from config.

@@ -3,7 +3,7 @@ module github.com/etcdhosts/dnsctl/v2
 go 1.25.5
 
 require (
-	github.com/etcdhosts/client-go/v2 v2.0.0
+	github.com/etcdhosts/client-go/v2 v2.0.1
 	github.com/spf13/cobra v1.10.2
 	github.com/testcontainers/testcontainers-go v0.40.0
 	go.etcd.io/etcd/client/v3 v3.6.7

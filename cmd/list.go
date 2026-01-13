@@ -1,12 +1,9 @@
 package cmd
 
 import (
-	"encoding/json"
-	"fmt"
-	"os"
-
 	"github.com/spf13/cobra"
-	"gopkg.in/yaml.v3"
+
+	"github.com/etcdhosts/dnsctl/v2/internal/output"
 )
 
 var listOutput string
@@ -44,7 +41,7 @@ func runList(cmd *cobra.Command, args []string) error {
 	if err != nil {
 		return err
 	}
-	defer cli.Close()
+	defer func() { _ = cli.Close() }()
 
 	var hosts any
 	if listRevision > 0 {
@@ -56,25 +53,5 @@ func runList(cmd *cobra.Command, args []string) error {
 		return err
 	}
 
-	return outputHosts(hosts, listOutput)
-}
-
-func outputHosts(hosts any, format string) error {
-	type stringer interface {
-		String() string
-	}
-
-	switch format {
-	case "json":
-		enc := json.NewEncoder(os.Stdout)
-		enc.SetIndent("", "  ")
-		return enc.Encode(hosts)
-	case "yaml":
-		return yaml.NewEncoder(os.Stdout).Encode(hosts)
-	default:
-		if s, ok := hosts.(stringer); ok {
-			fmt.Print(s.String())
-		}
-		return nil
-	}
+	return output.Print(hosts, output.Format(listOutput))
 }

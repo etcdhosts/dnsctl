@@ -127,7 +127,7 @@ func TestIntegration_AddListDelPurge(t *testing.T) {
 	if err != nil {
 		t.Fatalf("NewClient() error = %v", err)
 	}
-	defer cli.Close()
+	defer func() { _ = cli.Close() }()
 
 	t.Run("Add", func(t *testing.T) {
 		hosts, _ := cli.Read()
@@ -223,7 +223,7 @@ func TestIntegration_KeyLayout(t *testing.T) {
 	if err != nil {
 		t.Fatalf("NewClient() error = %v", err)
 	}
-	defer cli.Close()
+	defer func() { _ = cli.Close() }()
 
 	hosts, _ := cli.Read()
 	_ = hosts.Add(client.Record{Hostname: "web.local", IP: net.ParseIP("10.0.0.1")})
