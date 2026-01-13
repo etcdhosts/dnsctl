@@ -54,15 +54,21 @@ func runEdit(cmd *cobra.Command, args []string) error {
 		return nil
 	}
 
-	records, err := client.ParseRecords(result.Content)
-	if err != nil {
-		return fmt.Errorf("failed to parse hosts: %w", err)
+	// Use strict parsing to detect errors
+	parseResult := client.ParseRecordsStrict(result.Content)
+	if parseResult.HasErrors() {
+		fmt.Printf("Error: found %d invalid record(s):\n", len(parseResult.Errors))
+		for _, e := range parseResult.Errors {
+			fmt.Printf("  - %s\n", e.String())
+		}
+		fmt.Println("\nNo changes were saved. Please fix the errors and try again.")
+		return nil
 	}
 
-	newHosts, warnings := dedupeRecords(records)
+	newHosts, warnings := dedupeRecords(parseResult.Records)
 
 	if len(warnings) > 0 {
-		fmt.Printf("Warning: removed %d duplicate records:\n", len(warnings))
+		fmt.Printf("Warning: removed %d duplicate record(s):\n", len(warnings))
 		for _, warn := range warnings {
 			fmt.Printf("  - %s\n", warn)
 		}
